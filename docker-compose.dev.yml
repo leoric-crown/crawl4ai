@@ -1,0 +1,30 @@
+version: "3.8"
+
+# This file contains overrides for local development.
+# It should be used with the main docker-compose.yml file:
+#
+# docker compose -f docker-compose.yml -f docker-compose.dev.yml up
+
+services:
+  crawl4ai:
+    environment:
+      # Set the home directory to /app to prevent permission errors when the setup
+      # script tries to create config directories.
+      HOME: /app
+      # Add the directory containing server.py to the PYTHONPATH so that Python
+      # can find modules like 'crawler_pool' and 'auth' via absolute imports.
+      PYTHONPATH: /app/deploy/docker
+    # Override the user to run as the local user, preventing file permission issues
+    # with the mounted source code.
+    user: "${UID:-1000}:${GID:-1000}"
+
+    # Override the volumes to mount the local source code for live-reloading.
+    # Note: When overriding volumes, you must re-state all desired volumes.
+    volumes:
+      - ./custom-config.yml:/app/config.yml # from original
+      - /dev/shm:/dev/shm # from original
+      - .:/app # development-only mount
+
+    # Override the command to start the development server with --reload.
+    command: >
+      bash -c "playwright install && pip install -e '.[dev]' && uvicorn deploy.docker.server:app --host 0.0.0.0 --port 11235 --reload"
