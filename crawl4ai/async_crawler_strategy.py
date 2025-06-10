@@ -13,6 +13,7 @@ from io import BytesIO
 from PIL import Image, ImageDraw, ImageFont
 import hashlib
 import uuid
+import math
 from .js_snippet import load_js_script
 from .models import AsyncCrawlResponse
 from .config import SCREENSHOT_HEIGHT_TRESHOLD
@@ -1429,7 +1430,7 @@ class AsyncPlaywrightCrawlerStrategy(AsyncCrawlerStrategy):
             viewport_size = page.viewport_size
             viewport_height = viewport_size["height"]
 
-            num_segments = (page_height // viewport_height) + 1
+            num_segments = math.ceil(page_height / viewport_height)
             for i in range(num_segments):
                 y_offset = i * viewport_height
                 await page.evaluate(f"window.scrollTo(0, {y_offset})")

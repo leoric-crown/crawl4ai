@@ -53,8 +53,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Async crawler session leak, duplicate‑visit handling, URL normalisation  
-- Target‑element regressions in scraping strategies  
-- Logged‑URL readability, encoded‑URL decoding, middle truncation for long URLs  
+- Target‑element regressions in scraping strategies
+- Logged‑URL readability, encoded‑URL decoding, middle truncation for long URLs
+- Fixed duplicated screenshots when viewport height matches page height (#1187)
 - Closed issues: #701, #733, #756, #774, #804, #822, #839, #841, #842, #843, #867, #902, #911  
 
 ### Removed
